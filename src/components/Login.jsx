@@ -1,62 +1,59 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [message, setMessage] = useState('')
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const navigate=useNavigate()
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value)
+  const handlePwdChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Email:", email, "Password:", password);
+    setMessage("");
+    setError("");
+    setLoading(true);
+
+    if (!email || !password) {
+      setError("Please fill out all fields");
+      setLoading(false);
+      return;
     }
 
-
-    const handlePwdChange = (e) => {
-        setPassword(e.target.value)
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-         console.log("Email:", email, "Password:", password);
-        setMessage("")
-        setError("")
-        setLoading(true)
-
-            if (!email || !password) {
-                setError("Please fill out all fields");
-                setLoading(false)
-              return;
-            }
-
-
-        try {
-            const response = await axios.post("http://localhost:3000/auth/login", {
-                email,
-                password
-            });
-
-            const token = response.data.token
-            localStorage.setItem("authToken",token)
-
-            setMessage("Login successful redirecting....")
-
-            setTimeout(() => navigate("/dashboard"), 1500);
-
-        } catch (error) {
-            console.error(error.response?.data || error.message);
-            setError(error.response?.data?.message || "Invalid credentials")
-            
-        } finally {
-            setLoading(false)
+    try {
+      const response = await axios.post(
+        "https://pwd-reset-back-end.onrender.com/auth/login",
+        {
+          email,
+          password,
         }
-    }
+      );
 
+      const token = response.data.token;
+      localStorage.setItem("authToken", token);
+
+      setMessage("Login successful redirecting....");
+
+      setTimeout(() => navigate("/dashboard"), 1500);
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+      setError(error.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -95,7 +92,11 @@ function Login() {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary w-100 mb-3" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary w-100 mb-3"
+              disabled={loading}
+            >
               {loading ? "Logging in..." : "Login"}
             </button>
 
@@ -109,4 +110,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;
