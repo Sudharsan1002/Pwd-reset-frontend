@@ -18,7 +18,9 @@ function Resetpassword() {
     useEffect(() => {
         const validatetoken = async () => {
           try {
-            const response = await axios.get(`http://localhost:3000/auth/validateToken?token=${token}`);
+            const response = await axios.get(
+              `https://pwd-reset-back-end.onrender.com/auth/validateToken?token=${token}`
+            );
               if (response.data.success) {
                   settokenvalid(true)
               }
@@ -62,10 +64,13 @@ function Resetpassword() {
             return;
         }
         try {
-            const response = await axios.patch("http://localhost:3000/auth/resetpassword", {
+            const response = await axios.patch(
+              "https://pwd-reset-back-end.onrender.com/auth/resetpassword",
+              {
                 token,
                 password,
-            });
+              }
+            );
 
           setMessage("Password Reset successful redirecting....");
 

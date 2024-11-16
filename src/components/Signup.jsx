@@ -23,11 +23,14 @@ function Signup() {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/auth/signup", {
-        name: formData.name,
-        email: formData.email,
-        password:formData.password
-      });
+      const response = await axios.post(
+        "https://pwd-reset-back-end.onrender.com/auth/signup",
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
       setmessage(response.data.message)
 
       navigate("/login")

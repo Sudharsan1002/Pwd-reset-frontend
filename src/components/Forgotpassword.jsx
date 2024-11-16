@@ -18,7 +18,10 @@ function Forgotpassword() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/forgotpassword",{email} );
+      const response = await axios.post(
+        "https://pwd-reset-back-end.onrender.com/auth/forgotpassword",
+        { email }
+      );
       console.log(response.data.message);
 
       if (response.data.success) {
